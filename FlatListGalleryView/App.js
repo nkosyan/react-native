@@ -3,16 +3,13 @@ import {
   StatusBar,
   FlatList,
   Image,
-  Animated,
   Text,
   View,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Easing,
-  SafeAreaViewBase,
-  SafeAreaView,
 } from 'react-native';
+
 const {width, height} = Dimensions.get('screen');
 
 const API_KEY = '563492ad6f9170000100000130ab271c485b4901ab108e57b18d1daf';
@@ -21,7 +18,7 @@ const API_URL =
 const IMAGE_SIZE = 80;
 const SPACING = 10;
 
-const fatchImagesFromPexels = async () => {
+const fetchImagesFromPexels = async () => {
   const data = await fetch(API_URL, {
     headers: {
       Authorization: API_KEY,
@@ -31,16 +28,18 @@ const fatchImagesFromPexels = async () => {
   return photos;
 };
 
-export default () => {
+const GalleryView = () => {
   const [images, setImages] = React.useState(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
+
   React.useEffect(() => {
     const fetchImages = async () => {
-      const img = await fatchImagesFromPexels();
+      const img = await fetchImagesFromPexels();
       setImages(img);
     };
     fetchImages();
   }, []);
+
   const topRef = React.useRef();
   const tumbRef = React.useRef();
   const scrollToActiveIndex = index => {
@@ -61,7 +60,7 @@ export default () => {
       });
     }
   };
-  // console.log(images);
+
   if (!images) {
     return <Text>Loading ...</Text>;
   }
@@ -122,3 +121,5 @@ export default () => {
     </View>
   );
 };
+
+export default GalleryView;
